@@ -63,9 +63,25 @@ with st.form("prediction_form"):
             index=3,
         )
 
-    submitted = st.form_submit_button("Predict Median House Value", type="primary", use_container_width=True)
+    
+    # Validate the input values
+    invalid_bedrooms = total_bedrooms > total_rooms
+    invalid_households = households > population
 
-if submitted:
+    if invalid_bedrooms:
+        st.error("Total bedrooms cannot exceed total rooms.")
+
+    if invalid_households:
+        st.error("Households cannot exceed population.")
+
+    submitted = st.form_submit_button(
+        "Predict Median House Value",
+        type="primary",
+        use_container_width=True,
+    )
+
+
+if submitted and not invalid_bedrooms and not invalid_households:
     input_row = {
         "longitude": longitude,
         "latitude": latitude,
